@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecosistema Lobos y Ovejas</title>
+
+<style>
+:root {
+  --ink: #30334f;
+  --purple: #5654a5;
+  --pink: #ff8f9b;
+  --orange: #ffc078;
+}
+
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fff5ed;
+  color: var(--ink);
+  line-height: 1.65;
+}
+
+header {
+  background: linear-gradient(125deg, #ffd08a, #ffad9b, #f59ab5);
+  text-align: center;
+  padding: 68px 20px 58px;
+}
+
+header .emoji {
+  font-size: 48px;
+}
+
+header h1 {
+  font-size: clamp(34px, 7vw, 62px);
+  margin: 12px 0;
+  color: #49345d;
+}
+
+header p {
+  font-size: 20px;
+  max-width: 720px;
+  margin: 14px auto;
+  color: #593e50;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: linear-gradient(90deg, #5654a5, #7775c8);
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 11px 8px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+nav a:hover {
+  background: #ffffff30;
+}
+
+main {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 0 16px;
+}
+
+section {
+  background: white;
+  border-radius: 24px;
+  padding: 35px;
+  margin: 25px 0;
+  box-shadow: 0 8px 28px #5a4a5a12;
+  scroll-margin-top: 85px;
+}
+
+h2 {
+  color: #51509b;
+  font-size: 30px;
+}
+
+h3 {
+  color: #58549e;
+}
+
+.lead {
+  font-size: 18px;
+  color: #4d5062;
+}
+
+.note {
+  background: #fff0d9;
+  border-left: 6px solid #ffb45f;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 20px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 17px;
+  margin-top: 20px;
+}
+
+.card {
+  background: #fff9f4;
+  border: 1px solid #f5e9e2;
+  border-radius: 18px;
+  padding: 22px;
+  text-align: center;
+}
+
+.card .big {
+  font-size: 42px;
+}
+
+.card p {
+  color: #626477;
+}
+
+.pill {
+  display: inline-block;
+  background: #eeedff;
+  color: #4e4b91;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.control {
+  background: #f8f7ff;
+  padding: 15px;
+  border-radius: 14px;
+}
+
+label {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+input[type=range] {
+  width: 100%;
+  accent-color: #6662bd;
+  margin-top: 12px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 18px 0;
+}
+
+button {
+  border: 0;
+  border-radius: 24px;
+  padding: 12px 20px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  background: #5c59ad;
+  color: white;
+}
+
+button.secondary {
+  background: #ffad83;
+  color: #4b3451;
+}
+
+button.light {
+  background: #e9e8ff;
+  color: #49468c;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.stat {
+  border-radius: 15px;
+  padding: 15px;
+  text-align: center;
+  background: #fff1df;
+}
+
+.stat:nth-child(2) {
+  background: #f0edff;
+}
+
+.stat:nth-child(3) {
+  background: #e8f6ff;
+}
+
+.stat strong {
+  display: block;
+  font-size: 30px;
+}
+
+.stat span {
+  font-size: 14px;
+}
+
+#field {
+  width: 100%;
+  height: 290px;
+  border-radius: 16px;
+  background: #b9e8a2;
+  border: 2px solid #d8edc9;
+  display: block;
+}
+
+.chart-wrap {
+  background: #fffdfb;
+  border: 1px solid #eee7e3;
+  border-radius: 16px;
+  padding: 12px;
+  margin-top: 20px;
+}
+
+#chart {
+  width: 100%;
+  height: 270px;
+  display: block;
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  padding: 5px 8px;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.conclusion {
+  background: linear-gradient(120deg, #fff0dc, #ffe8ee);
+}
+
+footer {
+  text-align: center;
+  padding: 28px;
+  color: #77728a;
+}
+
+@media(max-width:520px) {
+  nav a {
+    font-size: 12px;
+    padding: 7px 9px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #field {
+    height: 240px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header id="inicio">
+  <div class="emoji">🐺 🐑 🌱</div>
+  <h1>Ecosistema Lobos y Ovejas</h1>
+  <p>Explorando la relación entre depredadores, presas y recursos naturales.</p>
+</header>
+
+<nav>
+  <a href="#inicio">Inicio</a>
+  <a href="#ecosistema">Ecosistema</a>
+  <a href="#configuracion">Configuración</a>
+  <a href="#resultados">Resultados</a>
+  <a href="#analisis">Análisis</a>
+  <a href="#conclusion">Conclusión</a>
+</nav>
+
+<main>
+
+<section>
+  <h2>🌎 ¿Cómo funciona este ecosistema?</h2>
+
+  <p class="lead">
+    Esta simulación representa un ecosistema formado por lobos,
+    ovejas y pasto. Su objetivo es observar cómo cambian
+    las poblaciones con el paso del tiempo.
+  </p>
+
+  <div class="note">
+    📌 Las ovejas se alimentan del pasto y los lobos
+    se alimentan de las ovejas. Por eso, las tres
+    poblaciones están relacionadas.
+  </div>
+</section>
+
+<section id="ecosistema">
+  <h2>🐾 Elementos del ecosistema</h2>
+
+  <div class="cards">
+
+    <article class="card">
+      <div class="big">🐑</div>
+      <h3>Ovejas</h3>
+      <p>Son las presas del ecosistema y se alimentan del pasto.</p>
+      <span class="pill">Consumidores</span>
+    </article>
+
+    <article class="card">
+      <div class="big">🐺</div>
+      <h3>Lobos</h3>
+      <p>Son los depredadores que se alimentan de las ovejas.</p>
+      <span class="pill">Depredadores</span>
+    </article>
+
+    <article class="card">
+      <div class="big">🌱</div>
+      <h3>Pasto</h3>
+      <p>Es el alimento de las ovejas y un recurso necesario para mantener la población.</p>
+      <span class="pill">Recurso natural</span>
+    </article>
+
+  </div>
+
+  <div class="note">
+    <strong>Relación alimenticia:</strong>
+    Pasto → Ovejas → Lobos.
+  </div>
+</section>
+
+<section id="configuracion">
+  <h2>⚙️ Configuración de la simulación</h2>
+
+  <p>
+    Modifica los valores iniciales y observa cómo pueden
+    cambiar las poblaciones.
+  </p>
+
+  <div class="controls">
+
+    <div class="control">
+      <label for="sheepStart">
+        🐑 Ovejas iniciales
+        <output id="sheepStartOut">100</output>
+      </label>
+      <input id="sheepStart" type="range" min="10" max="250" value="100">
+    </div>
+
+    <div class="control">
+      <label for="wolfStart">
+        🐺 Lobos iniciales
+        <output id="wolfStartOut">50</output>
+      </label>
+      <input id="wolfStart" type="range" min="5" max="120" value="50">
+    </div>
+
+    <div class="control">
+      <label for="grassStart">
+        🌱 Pasto inicial
+        <output id="grassStartOut">650</output>
+      </label>
+      <input id="grassStart" type="range" min="100" max="1000" step="10" value="650">
+    </div>
+
+    <div class="control">
+      <label for="speed">
+        Velocidad
+        <output id="speedOut">1×</output>
+      </label>
+      <input id="speed" type="range" min="1" max="5" value="1">
+    </div>
+
+  </div>
+
+  <div class="buttons">
+    <button id="start">▶ Iniciar simulación</button>
+    <button id="pause" class="secondary">Ⅱ Pausar</button>
+    <button id="reset" class="light">↻ Reiniciar</button>
+  </div>
+
+  <canvas id="field" width="900" height="430"></canvas>
+
+  <p style="font-size:13px;color:#777">
+    Representación visual ilustrativa de las poblaciones.
+  </p>
+</section>
+
+<section id="resultados">
+  <h2>📊 Resultados de la simulación</h2>
+
+  <p>
+    Estos indicadores se actualizan mientras la simulación
+    está en funcionamiento.
+  </p>
+
+  <div class="stats">
+
+    <div class="stat">
+      <strong id="sheepCount">100</strong>
+      <span>🐑 Ovejas</span>
+    </div>
+
+    <div class="stat">
+      <strong id="wolfCount">50</strong>
+      <span>🐺 Lobos</span>
+    </div>
+
+    <div class="stat">
+      <strong id="grassCount">650</strong>
+      <span>🌱 Pasto</span>
+    </div>
+
+  </div>
+
+  <div class="chart-wrap">
+    <h3>📈 Poblaciones a través del tiempo</h3>
+
+    <canvas id="chart" width="900" height="300"></canvas>
+
+    <div class="legend">
+      <span><i class="dot" style="background:#e99a72"></i>Ovejas</span>
+      <span><i class="dot" style="background:#6864b8"></i>Lobos</span>
+      <span><i class="dot" style="background:#64ad70"></i>Pasto</span>
+    </div>
+  </div>
+
+  <div class="note" id="status">
+    La simulación está lista. Presiona «Iniciar simulación» para comenzar.
+  </div>
+</section>
+
+<section id="analisis">
+  <h2>🔎 Análisis</h2>
+
+  <p>
+    En este ecosistema, las poblaciones dependen unas de otras.
+    Las ovejas necesitan pasto para alimentarse, mientras
+    que los lobos necesitan ovejas para sobrevivir.
+  </p>
+
+  <p>
+    Cuando aumenta la cantidad de lobos, pueden disminuir
+    las ovejas. Si hay menos ovejas, los lobos pueden tener
+    menos alimento. Por otro lado, si hay muchas ovejas,
+    el pasto puede disminuir porque es consumido.
+  </p>
+
+  <p>
+    Esto permite observar que un cambio en una población
+    puede afectar a las demás y modificar el equilibrio
+    del ecosistema.
+  </p>
+</section>
+
+<section id="conclusion" class="conclusion">
+  <h2>📝 Conclusión</h2>
+
+  <p>
+    Con esta simulación podemos comprender que los seres vivos
+    de un ecosistema están conectados y dependen de los recursos
+    disponibles para sobrevivir. Las ovejas necesitan el pasto
+    y los lobos necesitan las ovejas para alimentarse.
+    Por eso, cuando una de estas poblaciones aumenta o disminuye,
+    también puede afectar a las otras.
+  </p>
+
+  <p>
+    La actividad nos ayuda a entender que mantener un equilibrio
+    entre los seres vivos y los recursos naturales es importante
+    para que el ecosistema pueda continuar funcionando con
+    el paso del tiempo.
+  </p>
+</section>
+
+</main>
+
+<footer>
+  🐺 🐑 🌱 | Ecosistema Lobos y Ovejas
+</footer>
+
+<script>
+
+const $ = id => document.getElementById(id);
+
+let sheep = 100;
+let wolves = 50;
+let grass = 650;
+let tick = 0;
+let running = false;
+let history = [];
+let timer = null;
+
+const field = $('field');
+const ctx = field.getContext('2d');
+
+const chart = $('chart');
+const g = chart.getContext('2d');
+
+function syncOutputs() {
+  ['sheepStart','wolfStart','grassStart','speed'].forEach(id => {
+    $(id+'Out').textContent =
+      $(id).value + (id === 'speed' ? '×' : '');
+  });
+}
+
+['sheepStart','wolfStart','grassStart','speed'].forEach(id => {
+  $(id).addEventListener('input', syncOutputs);
+});
+
+syncOutputs();
+
+function setStats() {
+  $('sheepCount').textContent = sheep;
+  $('wolfCount').textContent = wolves;
+  $('grassCount').textContent = grass;
+}
+
+function addHistory() {
+  history.push({
+    t: tick,
+    s: sheep,
+    w: wolves,
+    p: grass
+  });
+
+  if (history.length > 100) {
+    history.shift();
+  }
+}
+
+function drawField() {
+
+  ctx.clearRect(0, 0, 900, 430);
+
+  ctx.fillStyle = '#b9e8a2';
+  ctx.fillRect(0, 0, 900, 430);
+
+  for (let i = 0; i < 100; i++) {
+    let x = (i * 97) % 890;
+    let y = (i * 53) % 420;
+
+    ctx.fillStyle = '#91cf7d';
+    ctx.fillText('🌱', x, y + 12);
+  }
+
+  let ns = Math.min(sheep, 75);
+  let nw = Math.min(wolves, 35);
+
+  for (let i = 0; i < ns; i++) {
+    let x = (i * 113 + tick * 7) % 870 + 10;
+    let y = (i * 67 + Math.floor(i / 8) * 19 + tick * 3) % 390 + 15;
+
+    ctx.font = '20px Arial';
+    ctx.fillText('🐑', x, y);
+  }
+
+  for (let i = 0; i < nw; i++) {
+    let x = (i * 173 + tick * 4) % 870 + 10;
+    let y = (i * 91 + Math.floor(i / 6) * 23 + tick * 2) % 390 + 15;
+
+    ctx.font = '22px Arial';
+    ctx.fillText('🐺', x, y);
+  }
+}
+
+function drawChart() {
+
+  const w = chart.width;
+  const h = chart.height;
+
+  g.clearRect(0, 0, w, h);
+
+  g.fillStyle = '#fffdfb';
+  g.fillRect(0, 0, w, h);
+
+  const pad = 48;
+  const base = h - 35;
+  const top = 18;
+  const plotH = base - top;
+  const plotW = w - pad - 20;
+
+  g.strokeStyle = '#e8e5ed';
+  g.lineWidth = 1;
+
+  for (let i = 0; i <= 4; i++) {
+    let y = top + i * plotH / 4;
+
+    g.beginPath();
+    g.moveTo(pad, y);
+    g.lineTo(w - 20, y);
+    g.stroke();
+  }
+
+  g.fillStyle = '#777';
+  g.font = '13px Arial';
+
+  g.fillText('Población', 8, 15);
+  g.fillText('Tiempo', w / 2 - 20, h - 7);
+
+  const max = Math.max(
+    100,
+    ...history.flatMap(v => [v.s, v.w, v.p])
+  );
+
+  const series = [
+    ['s', '#e99a72'],
+    ['w', '#6864b8'],
+    ['p', '#64ad70']
+  ];
+
+  series.forEach(([key, color]) => {
+
+    if (history.length < 1) return;
+
+    g.beginPath();
+    g.strokeStyle = color;
+    g.lineWidth = 3;
+
+    history.forEach((v, i) => {
+
+      let x = pad +
+        (history.length === 1 ? 0 : i / (history.length - 1)) * plotW;
+
+      let y = base - (v[key] / max) * plotH;
+
+      if (i) {
+        g.lineTo(x, y);
+      } else {
+        g.moveTo(x, y);
+      }
+
+    });
+
+    g.stroke();
+  });
+}
+
+function step() {
+
+  tick++;
+
+  // Modelo sencillo de demostración.
+  // Las ovejas consumen pasto y los lobos consumen ovejas.
+
+  let eaten = Math.min(
+    sheep,
+    Math.max(0, Math.round(wolves * 0.10))
+  );
+
+  sheep = Math.max(
+    0,
+    Math.min(
+      500,
+      Math.round(
+        sheep + (grass > 100 ? sheep * 0.035 : sheep * 0.008) - eaten
+      )
+    )
+  );
+
+  wolves = Math.max(
+    0,
+    Math.min(
+      250,
+      Math.round(
+        wolves + (sheep > 20 ? wolves * 0.012 : -wolves * 0.045)
+      )
+    )
+  );
+
+  grass = Math.max(
+    0,
+    Math.min(
+      1000,
+      Math.round(grass + 18 - Math.min(grass, sheep * 0.045))
+    )
+  );
+
+  if (tick % 5 === 0) {
+    addHistory();
+    setStats();
+    drawField();
+    drawChart();
+  }
+
+  if (sheep === 0 && wolves === 0) {
+    stop();
+
+    $('status').textContent =
+      'Las poblaciones de ovejas y lobos llegaron a cero en esta prueba. Reinicia para probar otros valores.';
+  } else {
+    $('status').textContent =
+      'Simulación en marcha · Tiempo: ' + tick + ' pasos.';
+  }
+}
+
+function start() {
+
+  if (running) return;
+
+  running = true;
+
+  $('status').textContent = 'Simulación en marcha.';
+
+  timer = setInterval(() => {
+
+    for (let i = 0; i < Number($('speed').value); i++) {
+      step();
+    }
+
+  }, 450);
+}
+
+function stop() {
+
+  running = false;
+
+  if (timer) {
+    clearInterval(timer);
+  }
+
+  timer = null;
+}
+
+function reset() {
+
+  stop();
+
+  sheep = Number($('sheepStart').value);
+  wolves = Number($('wolfStart').value);
+  grass = Number($('grassStart').value);
+
+  tick = 0;
+  history = [];
+
+  addHistory();
+  setStats();
+  drawField();
+  drawChart();
+
+  $('status').textContent =
+    'Simulación reiniciada. Presiona «Iniciar simulación» para comenzar.';
+}
+
+$('start').addEventListener('click', start);
+
+$('pause').addEventListener('click', () => {
+  stop();
+  $('status').textContent = 'Simulación pausada.';
+});
+
+$('reset').addEventListener('click', reset);
+
+reset();
+
+</script>
+
+</body>
+</html>
